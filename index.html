@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CiviHub | Build Smarter. Together.</title>
+<style>
+:root{
+  --navy:#0b1426; --navy2:#111d35; --panel:#101a2e; --line:#26334d;
+  --yellow:#ffc21a; --text:#ffffff; --muted:#a9b4c8; --green:#2fd36b; --blue:#3b82f6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Segoe UI",Roboto,Arial,sans-serif;background:var(--navy);color:var(--text);line-height:1.5}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+
+/* NAV */
+header{position:sticky;top:0;z-index:20;background:rgba(11,20,38,.96);border-bottom:1px solid var(--line)}
+.nav{max-width:1200px;margin:auto;display:flex;align-items:center;gap:24px;padding:12px 20px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.6rem}
+.logo small{display:block;font-size:.7rem;font-weight:400;color:var(--muted);margin-top:-4px}
+.logo span{color:var(--yellow)}
+.logo svg{width:42px;height:42px}
+nav{display:flex;gap:22px;margin:0 auto;flex-wrap:wrap}
+nav a{font-size:.95rem;padding:6px 0;border-bottom:3px solid transparent}
+nav a:hover,nav a.active{border-color:var(--yellow)}
+.btn{display:inline-block;border-radius:10px;padding:10px 20px;font-weight:700;border:2px solid transparent;cursor:pointer;font-size:.95rem}
+.btn.yellow{background:var(--yellow);color:#111}
+.btn.outline{border-color:#fff;color:#fff;background:transparent}
+.btn.yellow:hover{filter:brightness(1.08)}
+.cart-btn{background:transparent;border:0;color:#fff;font-size:1.3rem;cursor:pointer;position:relative}
+.cart-btn b{position:absolute;top:-6px;right:-10px;background:var(--yellow);color:#111;border-radius:99px;font-size:.7rem;padding:1px 6px}
+.menu-toggle{display:none;background:none;border:0;color:#fff;font-size:1.6rem;cursor:pointer}
+
+/* HERO */
+.hero{position:relative;min-height:520px;display:flex;align-items:center;overflow:hidden;
+  background:
+   linear-gradient(90deg,rgba(11,20,38,.95) 0%,rgba(11,20,38,.7) 45%,rgba(11,20,38,.15) 100%),
+   url("hero.jpg") center/cover no-repeat,
+   linear-gradient(135deg,#1c2b4d 0%,#3a2f55 55%,#c0623a 100%)}
+.hero::after{content:"";position:absolute;right:-60px;top:0;bottom:0;width:180px;background:linear-gradient(115deg,transparent 40%,var(--yellow) 41%,var(--yellow) 48%,transparent 49%);opacity:.6}
+.hero-in{max-width:1200px;margin:auto;padding:60px 20px;width:100%;position:relative;z-index:2}
+.hero h1{font-size:clamp(3rem,8vw,5.5rem);line-height:1;font-weight:800}
+.hero h1 span{color:var(--yellow)}
+.hero h2{font-size:clamp(1.8rem,4.5vw,3rem);line-height:1.1;margin-top:6px}
+.hero h2 em{color:var(--yellow);font-style:italic}
+.hero p{max-width:480px;margin:20px 0 26px;color:#e3e8f2;font-size:1.05rem}
+.hero .actions{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.play{display:flex;align-items:center;gap:10px;font-weight:600}
+.play i{width:44px;height:44px;border:2px solid #fff;border-radius:50%;display:grid;place-items:center;font-style:normal}
+.tag{position:absolute;right:6%;top:18%;font-family:"Segoe Script","Brush Script MT",cursive;font-size:clamp(1.4rem,3vw,2.4rem);line-height:1.1;transform:rotate(-6deg);z-index:2;text-shadow:0 2px 10px #000}
+
+/* FEATURE STRIP */
+.strip{max-width:1200px;margin:-30px auto 0;position:relative;z-index:3;background:var(--navy2);border:1px solid var(--line);border-radius:16px;
+  display:grid;grid-template-columns:repeat(5,1fr);padding:18px 10px}
+.strip div{display:flex;gap:12px;align-items:center;padding:6px 16px;border-right:1px solid var(--line)}
+.strip div:last-child{border:0}
+.strip .ic{font-size:1.8rem}
+.strip b{display:block;font-size:.95rem;line-height:1.2}
+.strip small{color:var(--muted);font-size:.78rem}
+
+/* PANELS */
+.panels{max-width:1200px;margin:24px auto;padding:0 20px;display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:20px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px}
+.panel h3{display:flex;justify-content:space-between;align-items:center;font-size:1.15rem;margin-bottom:14px}
+.panel h3 a{font-size:.85rem;font-weight:400;color:var(--muted)}
+.panel h3 a:hover{color:var(--yellow)}
+.products{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.prod{background:#0d1626;border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+.prod .img{height:84px;display:grid;place-items:center;font-size:2.4rem;background:linear-gradient(135deg,#2a3550,#46506b)}
+.prod .body{padding:8px;display:flex;flex-direction:column;gap:2px;flex:1}
+.prod .name{font-size:.8rem;line-height:1.2}
+.prod .price{color:var(--yellow);font-weight:800}
+.prod .price small{color:var(--muted);font-weight:400}
+.prod button{margin-top:auto;background:var(--yellow);border:0;border-radius:6px;padding:6px;font-weight:700;font-size:.78rem;cursor:pointer}
+.prod button:hover{filter:brightness(1.08)}
+.legend{display:flex;gap:14px;font-size:.78rem;color:var(--muted);margin-bottom:6px;flex-wrap:wrap}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
+.chart{width:100%;height:auto}
+.pricebox{display:flex;justify-content:space-between;align-items:center;margin-top:10px;background:#0d1626;border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-weight:700}
+.up{color:var(--green)}
+.proj{display:flex;gap:14px}
+.proj .photo{width:110px;min-height:130px;border-radius:10px;background:linear-gradient(160deg,#5b6b8c,#2a3550);display:grid;place-items:center;font-size:2.6rem;flex:none}
+.proj h4{font-size:1.05rem;line-height:1.2}
+.proj small{color:var(--muted);display:block;margin:4px 0 10px}
+.bar{height:8px;background:#2a3550;border-radius:9px;overflow:hidden;flex:1}
+.bar i{display:block;height:100%;width:70%;background:var(--yellow)}
+.pct{display:flex;gap:10px;align-items:center;font-weight:700}
+.panel .track{display:block;text-align:center;margin-top:14px;border:2px solid #fff;border-radius:99px;padding:9px;font-weight:600}
+.panel .track:hover{border-color:var(--yellow);color:var(--yellow)}
+
+/* CONTACT + FOOTER */
+.contact{max-width:1200px;margin:10px auto 30px;padding:0 20px}
+.contact .panel{display:flex;flex-wrap:wrap;gap:20px 40px;justify-content:space-between}
+.contact p{color:var(--muted)}
+footer{border-top:1px solid var(--line);background:var(--navy2)}
+.foot{max-width:1200px;margin:auto;padding:20px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;justify-content:space-between}
+.foot em{color:var(--muted)}
+.social{display:flex;gap:10px}
+.social span{width:38px;height:38px;border-radius:50%;background:#fff;color:#111;display:grid;place-items:center;font-weight:800}
+.legal{display:flex;gap:14px;font-size:.85rem}
+
+/* RESPONSIVE */
+@media(max-width:1000px){
+  .panels{grid-template-columns:1fr}
+  .strip{grid-template-columns:1fr 1fr}
+  .strip div{border:0}
+  .tag{display:none}
+}
+@media(max-width:820px){
+  .menu-toggle{display:block;margin-left:auto}
+  nav{display:none;position:absolute;top:100%;left:0;right:0;background:var(--navy);flex-direction:column;padding:14px 20px;gap:10px;border-bottom:1px solid var(--line)}
+  nav.open{display:flex}
+  .nav .btn{display:none}
+}
+@media(max-width:520px){
+  .strip{grid-template-columns:1fr}
+  .products{grid-template-columns:1fr 1fr 1fr;gap:6px}
+  .proj{flex-direction:column}
+  .proj .photo{width:100%;min-height:100px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="logo" href="#home">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M6 58V26L32 6l26 20v32H46V32L32 20 18 32v26z" fill="#ffc21a"/><rect x="26" y="40" width="12" height="18" fill="#ffc21a"/></svg>
+      <div>Civi<span>Hub</span><small>Build Smarter. Together.</small></div>
+    </a>
+    <button class="menu-toggle" id="menuBtn" aria-label="Open menu">☰</button>
+    <nav id="menu">
+      <a class="active" href="#home">Home</a>
+      <a href="#marketplace">Marketplace</a>
+      <a href="#prices">Price Monitor</a>
+      <a href="#resources">Resources</a>
+      <a href="#professionals">Professionals</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">About</a>
+    </nav>
+    <button class="cart-btn" aria-label="Cart">🛒<b id="cartCount">0</b></button>
+    <a class="btn outline" href="#">Login</a>
+    <a class="btn yellow" href="#">Sign Up</a>
+  </div>
+</header>
+
+<section class="hero" id="home">
+  <div class="hero-in">
+    <h1>Civi<span>Hub</span></h1>
+    <h2>Build Smarter.<br><em>Together.</em></h2>
+    <p>An all-in-one construction platform for buying and selling materials, tracking prices, accessing resources, and connecting with trusted professionals.</p>
+    <div class="actions">
+      <a class="btn yellow" href="#marketplace">Get Started →</a>
+      <a class="play" href="#"><i>▶</i> Watch Demo</a>
+    </div>
+  </div>
+  <div class="tag">Building<br>a Better<br>Tomorrow</div>
+</section>
+
+<section class="strip" id="resources">
+  <div><span class="ic">🛒</span><span><b>Construction Materials Marketplace</b><small>Buy &amp; Sell with Ease</small></span></div>
+  <div><span class="ic">📈</span><span><b>Real-Time Price Monitor</b><small>Track Market Prices</small></span></div>
+  <div><span class="ic">📦</span><span><b>CAD, BIM &amp; Resources</b><small>Access Design Tools</small></span></div>
+  <div id="professionals"><span class="ic">👷</span><span><b>Trusted Professionals</b><small>Find Experts Nearby</small></span></div>
+  <div><span class="ic">📁</span><span><b>Project Tracking</b><small>Manage Your Projects</small></span></div>
+</section>
+
+<section class="panels">
+  <!-- Marketplace -->
+  <div class="panel" id="marketplace">
+    <h3><span>🛒 Construction Marketplace</span><a href="#">View All →</a></h3>
+    <div class="products">
+      <div class="prod"><div class="img">🧱</div><div class="body"><div class="name">Portland Cement (40kg)</div><div class="price">₱280.00</div><button>Add to Cart</button></div></div>
+      <div class="prod"><div class="img">🔩</div><div class="body"><div class="name">Steel Bar (12mm)</div><div class="price">₱55.00 <small>/kg</small></div><button>Add to Cart</button></div></div>
+      <div class="prod"><div class="img">⬜</div><div class="body"><div class="name">Hollow Blocks (6")</div><div class="price">₱18.00 <small>/pc</small></div><button>Add to Cart</button></div></div>
+    </div>
+  </div>
+
+  <!-- Price monitor -->
+  <div class="panel" id="prices">
+    <h3><span>📈 Price Monitor</span><a href="#">View Details →</a></h3>
+    <div class="legend">
+      <span><i style="background:#ffc21a"></i>Cement</span>
+      <span><i style="background:#3b82f6"></i>Steel</span>
+      <span><i style="background:#8b95a8"></i>Hollow Blocks</span>
+    </div>
+    <svg class="chart" viewBox="0 0 320 170" role="img" aria-label="Price trend chart">
+      <g stroke="#26334d" stroke-width="1">
+        <line x1="34" y1="15" x2="310" y2="15"/><line x1="34" y1="55" x2="310" y2="55"/>
+        <line x1="34" y1="95" x2="310" y2="95"/><line x1="34" y1="135" x2="310" y2="135"/>
+      </g>
+      <g fill="#a9b4c8" font-size="10">
+        <text x="4" y="18">400</text><text x="4" y="58">300</text><text x="4" y="98">200</text><text x="4" y="138">100</text>
+        <text x="30" y="160">Nov 9</text><text x="86" y="160">Nov 10</text><text x="144" y="160">Nov 11</text><text x="200" y="160">Nov 12</text><text x="256" y="160">Nov 13</text>
+      </g>
+      <polyline fill="none" stroke="#ffc21a" stroke-width="3" points="48,50 105,42 162,35 220,40 278,30"/>
+      <polyline fill="none" stroke="#3b82f6" stroke-width="3" points="48,92 105,88 162,82 220,88 278,80"/>
+      <polyline fill="none" stroke="#8b95a8" stroke-width="3" points="48,122 105,116 162,110 220,114 278,108"/>
+      <g fill="#ffc21a"><circle cx="48" cy="50" r="4"/><circle cx="105" cy="42" r="4"/><circle cx="162" cy="35" r="4"/><circle cx="220" cy="40" r="4"/><circle cx="278" cy="30" r="4"/></g>
+      <g fill="#3b82f6"><circle cx="48" cy="92" r="4"/><circle cx="105" cy="88" r="4"/><circle cx="162" cy="82" r="4"/><circle cx="220" cy="88" r="4"/><circle cx="278" cy="80" r="4"/></g>
+    </svg>
+    <div class="pricebox"><span>📢 Cement Price: ₱280.00</span><span class="up">▲ +2.1%</span></div>
+  </div>
+
+  <!-- Projects -->
+  <div class="panel" id="projects">
+    <h3><span>📁 Ongoing Projects</span><a href="#">View All →</a></h3>
+    <div class="proj">
+      <div class="photo">🏗️</div>
+      <div>
+        <h4>Municipal Hall Expansion Project</h4>
+        <small>📍 Cantilan, Surigao del Sur</small>
+        <div class="pct"><div class="bar"><i></i></div>70%</div>
+      </div>
+    </div>
+    <a class="track" href="#">Track Project →</a>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="panel">
+    <div><h3 style="margin:0 0 6px">About &amp; Contact</h3><p>Cantilan, Surigao del Sur</p></div>
+    <div><p>📞 Phone: 09XX XXX XXXX</p><p>💬 Messenger: your page link here</p></div>
+    <div><p>🕗 Mon – Sat, 8:00 AM – 5:00 PM</p></div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot">
+    <a class="logo" href="#home">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M6 58V26L32 6l26 20v32H46V32L32 20 18 32v26z" fill="#ffc21a"/><rect x="26" y="40" width="12" height="18" fill="#ffc21a"/></svg>
+      <div>Civi<span>Hub</span><small>Build Smarter. Together.</small></div>
+    </a>
+    <em>Your Trusted Partner in Construction Innovation.</em>
+    <div class="social"><span>f</span><span>▶</span><span>in</span></div>
+    <div class="legal"><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></div>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu
+  var menu = document.getElementById('menu');
+  document.getElementById('menuBtn').onclick = function(){ menu.classList.toggle('open'); };
+  menu.querySelectorAll('a').forEach(function(a){ a.onclick = function(){ menu.classList.remove('open'); }; });
+  // Simple cart counter
+  var count = 0, badge = document.getElementById('cartCount');
+  document.querySelectorAll('.prod button').forEach(function(b){
+    b.onclick = function(){ count++; badge.textContent = count; b.textContent = 'Added ✓'; setTimeout(function(){ b.textContent = 'Add to Cart'; }, 1200); };
+  });
+</script>
+</body>
+</html>
