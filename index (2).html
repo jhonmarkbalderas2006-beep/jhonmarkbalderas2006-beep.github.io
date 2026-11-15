@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CiviHub</title>
+<style>
+:root{--navy:#0b1426;--panel:#101a2e;--line:#26334d;--yellow:#ffc21a;--muted:#a9b4c8;--red:#ff6b6b;--green:#2fd36b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;font-family:"Segoe UI",Roboto,Arial,sans-serif;color:#fff;background:linear-gradient(rgba(11,20,38,.88),rgba(11,20,38,.93)),url("hero.jpg") center/cover fixed,linear-gradient(135deg,#1c2b4d,#3a2f55 60%,#c0623a)}
+.hidden{display:none!important}
+.wrap{max-width:1000px;margin:auto;padding:20px}
+.center{min-height:100vh;display:grid;place-items:center;padding:20px}
+.card{width:100%;max-width:400px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:30px 26px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.logo{display:flex;align-items:center;gap:10px;justify-content:center;font-weight:800;font-size:2rem}
+.logo span{color:var(--yellow)} .logo svg{width:42px;height:42px}
+.sub{text-align:center;color:var(--muted);font-size:.9rem;margin:4px 0 20px}
+h1{font-size:1.25rem;text-align:center;margin-bottom:10px}
+label{display:block;font-size:.85rem;margin:14px 0 6px;color:var(--muted)}
+input{width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:#0d1626;color:#fff;font-size:1rem}
+input:focus{outline:3px solid var(--yellow);outline-offset:1px}
+button{cursor:pointer;font-weight:800;font-size:1rem;border-radius:10px;border:0;padding:12px 18px;background:var(--yellow);color:#111}
+button:hover{filter:brightness(1.08)}
+button.full{width:100%;margin-top:20px}
+button.ghost{background:transparent;border:2px solid #fff;color:#fff;padding:8px 16px;font-size:.9rem}
+button.del{background:var(--red);color:#111;padding:6px 12px;font-size:.8rem}
+.msg{margin-top:14px;text-align:center;font-size:.9rem;color:var(--yellow);min-height:1.2em}
+.msg.ok{color:var(--green)}
+.switch{text-align:center;margin-top:16px;color:var(--muted);font-size:.9rem}
+.switch a{color:var(--yellow);cursor:pointer;font-weight:700}
+header.top{display:flex;align-items:center;gap:14px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:20px}
+header.top .logo{font-size:1.5rem;justify-content:flex-start} header.top .logo svg{width:34px;height:34px}
+.spacer{flex:1}
+.who{color:var(--muted);font-size:.85rem}
+.badge{background:var(--yellow);color:#111;border-radius:99px;padding:2px 10px;font-size:.75rem;font-weight:800;margin-left:6px}
+h2{margin:6px 0 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.prod{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.prod .n{font-weight:700}
+.prod .p{color:var(--yellow);font-weight:800;font-size:1.1rem}
+.prod .p small{color:var(--muted);font-weight:400}
+.prod button{margin-top:auto;padding:9px;font-size:.9rem}
+.empty{color:var(--muted);padding:20px;border:1px dashed var(--line);border-radius:12px}
+.form{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:10px;align-items:end;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:20px}
+.form label{margin:0 0 6px}
+.cart{position:fixed;right:16px;bottom:16px;background:var(--yellow);color:#111;font-weight:800;border-radius:99px;padding:10px 18px;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+@media(max-width:700px){.form{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN / SIGN UP -->
+<main id="authView" class="center">
+  <div class="card">
+    <div class="logo">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M6 58V26L32 6l26 20v32H46V32L32 20 18 32v26z" fill="#ffc21a"/><rect x="26" y="40" width="12" height="18" fill="#ffc21a"/></svg>
+      <div>Civi<span>Hub</span></div>
+    </div>
+    <p class="sub">Build Smarter. Together.</p>
+    <h1 id="authTitle">Log in</h1>
+    <form id="authForm">
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="username" required>
+      <label for="pass">Password</label>
+      <input id="pass" type="password" autocomplete="current-password" required minlength="6">
+      <button class="full" id="authBtn" type="submit">Log in</button>
+      <p id="authMsg" class="msg" role="status"></p>
+    </form>
+    <p class="switch" id="switchTxt">Wala pay account? <a id="switchLink">Sign Up</a></p>
+  </div>
+</main>
+
+<!-- BUYER -->
+<main id="buyerView" class="wrap hidden">
+  <header class="top">
+    <div class="logo">Civi<span>Hub</span></div><div class="spacer"></div>
+    <span class="who" id="buyerWho"></span>
+    <button class="ghost" data-logout>Log out</button>
+  </header>
+  <p id="verifyNote" class="msg hidden"></p>
+  <h2>Products</h2>
+  <div id="buyerGrid" class="grid"></div>
+  <div id="cartBtn" class="cart hidden">Cart: <span id="cartCount">0</span></div>
+</main>
+
+<!-- ADMIN -->
+<main id="adminView" class="wrap hidden">
+  <header class="top">
+    <div class="logo">Civi<span>Hub</span><span class="badge">ADMIN</span></div><div class="spacer"></div>
+    <span class="who" id="adminWho"></span>
+    <button class="ghost" data-logout>Log out</button>
+  </header>
+  <h2>Add product</h2>
+  <form id="prodForm" class="form">
+    <div><label for="pn">Product name</label><input id="pn" required placeholder="Portland Cement (40kg)"></div>
+    <div><label for="pp">Price (₱)</label><input id="pp" type="number" min="0" step="0.01" required></div>
+    <div><label for="pu">Unit</label><input id="pu" placeholder="/bag"></div>
+    <button type="submit">Add</button>
+  </form>
+  <p id="adminMsg" class="msg"></p>
+  <h2>Your products</h2>
+  <div id="adminGrid" class="grid"></div>
+</main>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const app = initializeApp({
+  apiKey: "AIzaSyDnmJNxNC1x8rZrGNEfciqNk8ekRSBfdhQ",
+  authDomain: "civihub-49041.firebaseapp.com",
+  projectId: "civihub-49041",
+  storageBucket: "civihub-49041.firebasestorage.app",
+  messagingSenderId: "1094274294044",
+  appId: "1:1094274294044:web:db3d1bee61121212b99ad9"
+});
+const auth = getAuth(app);
+const db = getFirestore(app);
+const ADMIN_EMAIL = "jhonmarkbalderas2006@gmail.com";
+const $ = id => document.getElementById(id);
+
+let signupMode = false, cart = 0;
+
+function show(view){ ["authView","buyerView","adminView"].forEach(v => $(v).classList.toggle("hidden", v !== view)); }
+function setMsg(el, text, ok){ el.textContent = text; el.classList.toggle("ok", !!ok); }
+function errText(e){
+  const c = e.code || "";
+  if (c.includes("invalid-credential") || c.includes("wrong-password") || c.includes("user-not-found")) return "Sayop ang email o password.";
+  if (c.includes("email-already-in-use")) return "Gamit na kini nga email. Pag-Log in na lang.";
+  if (c.includes("weak-password")) return "Labing menos 6 ka letra ang password.";
+  if (c.includes("invalid-email")) return "Sayop ang pagkasulat sa email.";
+  if (c.includes("too-many-requests")) return "Daghan na kaayo ang pagsulay. Hulat anay.";
+  if (c.includes("permission-denied")) return "Walay permiso. Susiha ang Firestore rules.";
+  return "Naay sayop: " + (e.message || c);
+}
+
+// Toggle Log in / Sign Up
+$("switchTxt").addEventListener("click", ev => {
+  if (ev.target.id !== "switchLink") return;
+  signupMode = !signupMode;
+  $("authTitle").textContent = signupMode ? "Sign Up" : "Log in";
+  $("authBtn").textContent = signupMode ? "Create account" : "Log in";
+  $("pass").autocomplete = signupMode ? "new-password" : "current-password";
+  $("switchTxt").innerHTML = signupMode ? 'Naa na kay account? <a id="switchLink">Log in</a>' : 'Wala pay account? <a id="switchLink">Sign Up</a>';
+  setMsg($("authMsg"), "");
+});
+
+$("authForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const email = $("email").value.trim(), pass = $("pass").value;
+  setMsg($("authMsg"), "Hulat...");
+  try {
+    if (signupMode) {
+      const cred = await createUserWithEmailAndPassword(auth, email, pass);
+      await sendEmailVerification(cred.user);
+    } else {
+      await signInWithEmailAndPassword(auth, email, pass);
+    }
+    setMsg($("authMsg"), "");
+  } catch (err) { setMsg($("authMsg"), errText(err)); }
+});
+
+document.querySelectorAll("[data-logout]").forEach(b => b.addEventListener("click", () => signOut(auth)));
+
+function card(p, admin){
+  const d = document.createElement("div"); d.className = "prod";
+  const n = document.createElement("div"); n.className = "n"; n.textContent = p.name;
+  const pr = document.createElement("div"); pr.className = "p";
+  pr.textContent = "₱" + Number(p.price).toLocaleString("en-PH", {minimumFractionDigits:2});
+  if (p.unit) { const s = document.createElement("small"); s.textContent = " " + p.unit; pr.appendChild(s); }
+  const b = document.createElement("button");
+  if (admin) {
+    b.className = "del"; b.textContent = "Delete";
+    b.onclick = async () => {
+      if (!confirm("I-delete ang " + p.name + "?")) return;
+      try { await deleteDoc(doc(db, "products", p.id)); loadProducts(); } catch (err) { setMsg($("adminMsg"), errText(err)); }
+    };
+  } else {
+    b.textContent = "Add to Cart";
+    b.onclick = () => { cart++; $("cartCount").textContent = cart; $("cartBtn").classList.remove("hidden"); };
+  }
+  d.append(n, pr, b);
+  return d;
+}
+
+async function loadProducts(){
+  const buyer = $("buyerGrid"), admin = $("adminGrid");
+  buyer.replaceChildren(); admin.replaceChildren();
+  try {
+    const snap = await getDocs(collection(db, "products"));
+    const items = snap.docs.map(x => ({ id:x.id, ...x.data() }));
+    if (!items.length) {
+      const e = () => { const d = document.createElement("div"); d.className = "empty"; d.textContent = "Wala pay products."; return d; };
+      buyer.appendChild(e()); admin.appendChild(e());
+      return;
+    }
+    items.forEach(p => { buyer.appendChild(card(p, false)); admin.appendChild(card(p, true)); });
+  } catch (err) {
+    const d = document.createElement("div"); d.className = "empty"; d.textContent = errText(err);
+    buyer.appendChild(d);
+  }
+}
+
+$("prodForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  setMsg($("adminMsg"), "Hulat...");
+  try {
+    await addDoc(collection(db, "products"), {
+      name: $("pn").value.trim(), price: Number($("pp").value), unit: $("pu").value.trim(), createdAt: serverTimestamp()
+    });
+    $("prodForm").reset();
+    setMsg($("adminMsg"), "Naidugang na ang product.", true);
+    loadProducts();
+  } catch (err) { setMsg($("adminMsg"), errText(err)); }
+});
+
+onAuthStateChanged(auth, async user => {
+  if (!user) { show("authView"); return; }
+  try { await user.reload(); } catch (_) {}
+  const isAdmin = user.email && user.email.toLowerCase() === ADMIN_EMAIL && user.emailVerified;
+  $("buyerWho").textContent = user.email;
+  $("adminWho").textContent = user.email;
+  const note = $("verifyNote");
+  note.classList.add("hidden");
+  if (user.email && user.email.toLowerCase() === ADMIN_EMAIL && !user.emailVerified) {
+    note.textContent = "I-verify ang imong email (tan-awa ang inbox/spam) ug i-refresh ang page aron maablihan ang Admin.";
+    note.classList.remove("hidden");
+  }
+  show(isAdmin ? "adminView" : "buyerView");
+  loadProducts();
+});
+</script>
+</body>
+</html>
